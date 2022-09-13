@@ -1,0 +1,81 @@
+#sidebar .sidebar-header
+{
+    display: flex;
+    /*justify-content: space-between;*/
+    height: 70px;
+}
+
+#sidebar .logo
+{
+    align-items: center;
+
+}
+#sidebar  .logo img
+{
+    align-items: center;
+    width: 40px;
+    height: 40px;
+}
+#sidebar .brand h1
+{
+    font-weight: 500;
+    font-size: 25px;
+
+}
+
+/*dashboard --> card box*/
+.h1{
+    font-size: 18px;
+}
+
+
+.cardBox
+{
+    position: relative;
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns:repeat(3,1fr);
+    grid-gap: 30px;
+
+}
+
+.cardBox .card
+{
+    position: relative;
+    background: white;
+    padding: 30px;
+    display: flex;
+    justify-content: space-between;
+    box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    cursor: pointer;
+}
+.cardBox .card .numbers
+{
+    position: relative;
+    font-weight: 500;
+    font-size: 2.5em;
+    color: #312f2f;
+}
+.cardBox .card .cardName
+{
+    color: black;
+    font-size: 1.1em;
+    margin-top: 10px;
+}
+.cardBox .card .iconBx
+{
+    font-size: 3em;
+}
+
+.cardBox .card:hover
+{
+    background: #42e5e5;
+}
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName,
+.cardBox .card:hover .iconBx
+{
+    color: white;
+}
