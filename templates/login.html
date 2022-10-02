@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link rel="stylesheet" href="static/css/index.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms">
+        <div class="form login">
+          <span class="title">Login</span>
+
+          <form action="#">
+            <div class="input-field">
+              <input
+                type="text"
+                placeholder="Enter Username"
+                required
+                oninvalid="this.setCustomValidity('Enter Username')"
+                oninput="this.setCustomValidity('')"
+              />
+              <ion-icon name="person"></ion-icon>
+            </div>
+            <div class="input-field">
+              <input
+                type="password"
+                placeholder="Enter Password"
+                class="password"
+                required
+                oninvalid="this.setCustomValidity('Enter Password')"
+                oninput="this.setCustomValidity('')"
+              />
+              <ion-icon name="lock-closed" class="icon"></ion-icon>
+              <ion-icon name="eye-off" class="icon-hid"></ion-icon>
+            </div>
+            <div class="checkbox-text">
+              <div class="checkbox-content">
+                <input type="checkbox" id="logCheck" />
+                <label for="logCheck" class="text">Remember me</label>
+              </div>
+            </div>
+
+            <div class="input-field button">
+              <input type="submit" value="Login Now" />
+
+              <!-- <button value="Login Now" type="submit">Login Now</button> -->
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- add ionicons  -->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
+  </body>
+</html>

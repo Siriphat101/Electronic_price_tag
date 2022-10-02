@@ -1,0 +1,299 @@
+/* import google font K2D */
+@import url("https://fonts.googleapis.com/css2?family=K2D:wght@100;500&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "K2D", sans-serif;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+}
+/* create navbar top page */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 50px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1;
+}
+.navbar .logo {
+  height: 50px;
+  width: 100px;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  background: #000;
+  text-decoration: none;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 450px;
+  height: 450px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  background: rgba(0, 0, 0, 0.5);
+  transition: 0.5s;
+}
+
+
+
+.card:hover {
+  transform: scale(1.005);
+}
+
+.imgIcon {
+  position: absolute;
+  top: -50px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(245, 242, 242, 0.45);
+}
+.imgIcon img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.card .content {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: block;
+  justify-content: center;
+}
+.card .content .title {
+  padding-top: 65px;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+}
+.card .content .title h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.card .content .description {
+  margin-top: 15px;
+  padding: 15px;
+  padding-right: 45px;
+  padding-left: 45px;
+  text-align: center;
+  width: 100%;
+  color: #fff;
+}
+
+.card .content .description p {
+  font-size: 1.25rem;
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+.card .content .actionButton {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 10px;
+  padding: 10px;
+  /* background: #fff; */
+  border-radius: 5px;
+  color: #000;
+  text-decoration: none;
+  transition: 0.5s;
+  /* background-color: #23a6d5; */
+}
+.card .content .actionButton button {
+  background: rgb(20, 28, 34);
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  color: rgb(252, 252, 252);
+  font-size: 23px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.card .content .actionButton button a{
+  text-decoration: none;
+
+  color: rgb(252, 252, 252);
+}
+.card .content .actionButton button:hover {
+  background: rgb(15, 15, 15);
+  /* color: rgb(20, 28, 34); */
+}
+
+hr {
+  position: absolute;
+  margin-top: 10px;
+  /* margin-bottom: 10px; */
+  width: 80%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+
+
+/*login page*/
+.container {
+  position: relative;
+  width: 100%;
+  /* height: 400px; */
+  max-width: 400px;
+  background: rgb(255, 255, 255);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+}
+
+.container .form {
+  padding: 30px;
+}
+.container .form .title {
+  position: relative;
+  font-size: 33px;
+  font-weight: 600;
+}
+
+.container .form .title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 30px;
+  background-color: rgb(0, 110, 255);
+  border-radius: 25px;
+}
+.form .input-field {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.input-field input {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  padding: 0 35px;
+  outline: none;
+  border: none;
+  font-size: 16px;
+  border-bottom: 2px solid #ccc;
+  border-top: 2px solid transparent;
+  transition: all 0.2s ease;
+}
+.input-field input:is(:focus, :valid) {
+  border-bottom-color: rgb(20, 170, 240);
+}
+
+.input-field ion-icon {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #999;
+  font-size: 22px;
+  transition: all 0.2s ease;
+}
+.input-field input:is(:focus, :valid) ~ ion-icon {
+  color: rgb(20, 170, 240);
+}
+
+.input-field ion-icon.icon {
+  left: 0;
+}
+.input-field ion-icon.icon-hid {
+  display: none;
+  right: 0;
+  cursor: pointer;
+}
+.input-field ion-icon.icon-hid:hover {
+  color: rgb(20, 170, 240);
+}
+
+.form .checkbox-text {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  align-items: center;
+}
+.checkbox-text .checkbox-content {
+  display: flex;
+  align-items: center;
+}
+.checkbox-content input {
+  margin: 0 8px -2px 4px;
+  accent-color: rgb(10, 158, 243);
+}
+.form .text {
+  font-size: 14px;
+}
+.form .button {
+  margin-top: 35px;
+}
+
+.form .button input {
+  border: none;
+  color: #fff;
+  font-size: 25px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  border-radius: 50px;
+  background-color: #158bb6;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+/* tag button */
+/* .form .button button {
+    border: none;
+    color: #fff;
+    font-size:25px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border-radius: 50px;
+    background-color: #158bb6;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.input-field button{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 0 35px;
+    outline: none;
+    border: none;
+    font-size: 16px;
+    border-bottom: 2px solid #ccc;
+    border-top: 2px solid transparent;
+    transition: all 0.2s ease;
+}
+
+*/
+
+.button input:hover {
+  background-color: #25cce9;
+}

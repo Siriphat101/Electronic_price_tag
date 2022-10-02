@@ -4,8 +4,13 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def hello_world():  # put application's code here
-    return render_template('layout.html')
+def hello_world():  #
+    return render_template('index.html')
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
 
 
 @app.route('/dashboard')
