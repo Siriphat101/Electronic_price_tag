@@ -77,7 +77,13 @@ def Dashboard():
 
 @app.route('/product')
 def Product():
-    return render_template('product.html')
+    # get product data from database
+    cur = db.connection.cursor()
+    cur.execute("SELECT * FROM products")
+    data = cur.fetchall()
+    cur.close()
+
+    return render_template('product.html',products=data)
 
 
 @app.route('/help')
