@@ -83,7 +83,7 @@ def Product():
     data = cur.fetchall()
     cur.close()
 
-    return render_template('product.html',products=data)
+    return render_template('product.html', products=data)
 
 
 @app.route('/help')
