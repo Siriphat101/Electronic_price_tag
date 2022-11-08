@@ -13,6 +13,7 @@
       <div class="forms">
         <div class="form login">
           <span class="title">Login</span>
+        <span class="icon-back"><ion-icon name="arrow-back-circle"></ion-icon></span>
 
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -50,12 +51,14 @@
               <ion-icon name="lock-closed" class="icon"></ion-icon>
               <ion-icon name="eye-off" class="icon-hid"></ion-icon>
             </div>
+
             <div class="checkbox-text">
               <div class="checkbox-content">
                 <input type="checkbox" id="logCheck" />
                 <label for="logCheck" class="text">Remember me</label>
               </div>
             </div>
+
 
             <div class="input-field button">
               <input type="submit" value="Login Now" />
@@ -77,6 +80,14 @@
       nomodule
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
     ></script>
+
+  <script>
+      const iconBack = document.querySelector(".icon-back");
+
+        iconBack.addEventListener("click", () => {
+            window.location.href = "/";
+        });
+  </script>
 
   </body>
 </html>

@@ -234,6 +234,20 @@ hr {
   color: rgb(20, 170, 240);
 }
 
+/* icon back to home page */
+.icon-back {
+  position: absolute;
+  top: 25px;
+  right: 5px;
+  font-size: 50px;
+
+  color: #dce4e7;
+  cursor: pointer;
+}
+.icon-back:hover {
+    color: #25cce9;
+}
+
 .form .checkbox-text {
   display: flex;
   justify-content: space-between;
