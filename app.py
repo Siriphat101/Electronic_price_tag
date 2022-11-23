@@ -66,7 +66,7 @@ def logout():
 # if error 401, redirect to login page
 @app.errorhandler(401)
 def page_not_found(e):
-    return redirect(url_for('login'))
+    return redirect(url_for('login')), 401
 
 
 @app.route('/dashboard')
@@ -77,12 +77,9 @@ def Dashboard():
 
 @app.route('/product')
 def Product():
-    return render_template('product.html')
+    products = ModelUser.get_all_products(db)
 
-
-@app.route('/help')
-def Help():
-    return render_template('help.html')
+    return render_template('product.html',products=products)
 
 
 @app.route('/setting')
