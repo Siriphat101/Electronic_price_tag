@@ -1,284 +1,328 @@
 {% extends 'layout.html' %} {% block head %}
-<title>Product</title>
-<link
-  rel="stylesheet"
-  href="{{ url_for('static', filename='dashboard/custom.css') }}"
-/>
+    <title>Product</title>
+    <link
+            rel="stylesheet"
+            href="{{ url_for('static', filename='dashboard/custom.css') }}"
+    />
 
 {% endblock %} {% block body %}
 
-<div class="content-product">
-  <div class="row">
-    <div class="container-xl">
-      <div class="table-responsive">
-        <div class="table-wrapper">
-          <div class="table-title">
-            <div class="row">
-              <div class="col-sm-6">
-                <h2>Manage <b>Product</b></h2>
-              </div>
-              <div class="col-sm-6">
-                <button
-                  type="button"
-                  class="btn btn-primary"
-                  data-bs-toggle="modal"
-                  data-bs-target="#addProductModal"
-                >
-                  <i class="bx bx-plus-medical"></i>
-                  Add Product
-                </button>
+    <div class="content-product">
+        <div class="row">
+            <div class="container-xl">
+                <div class="table-responsive">
+                    <div class="table-wrapper">
+                        <div class="table-title">
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <h2>Manage <b>Product</b></h2>
+                                </div>
+                                <div class="col-sm-6">
+                                    <button
+                                            type="button"
+                                            class="btn btn-primary"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#addProductModal"
+                                    >
+                                        <i class="bx bx-plus-medical"></i>
+                                        Add Product
+                                    </button>
 
-                <div class="search-box">
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      id="search"
-                      class="form-control"
-                      placeholder="Search by Name"
-                    />
-                    <span class="input-group-addon"
-                      ><i class="bx bx-search-alt-2"></i
-                    ></span>
-                  </div>
+                                    <div class="search-box">
+                                        <div class="input-group">
+                                            <input
+                                                    type="text"
+                                                    id="search"
+                                                    class="form-control"
+                                                    placeholder="Search by Name"
+                                            />
+                                            <span class="input-group-addon"
+                                            ><i class="bx bx-search-alt-2"></i
+                                            ></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <table class="table table-hover table-bordered" id="myTable">
+                            <thead class="table-dark">
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Name</th>
+                                <th class="text-center" style="width: 200px">Price</th>
+
+                                <th class="text-center">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for product in products %}
+
+
+                                <tr>
+                                    <td class="text-end">{{ product.product_id }}</td>
+                                    <td>{{ product.product_name }}</td>
+                                    <td class="text-end">{{ product.product_price }}</td>
+
+                                    <td>
+                                        <button type="button" class="btn btn-edit btn-warning btn-sm">
+                                            <i class="bx bx-pencil"></i>
+                                            Edit
+                                        </button>
+
+                                        <button
+                                                type="button"
+                                                class="btn btn-delete btn-danger btn-sm"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteProductModal"
+                                        >
+                                            <i class="bx bx-trash-alt"></i>
+                                            Delete
+                                        </button>
+                                        <button
+                                                type="button"
+                                                class="btn btn-save btn-info btn-sm"
+                                                name="save"
+                                        >
+                                            <i class="bx bxs-save"></i>
+                                            Save
+                                        </button>
+                                        <button
+                                                type="button"
+                                                class="btn btn-cancel btn-danger btn-sm"
+                                                name="cancel"
+                                        >
+                                            <i class='bx bxs-x-square'></i>
+                                            Cancel
+                                        </button>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        <div class="clearfix">
+                            <div class="hint-text">
+                                Showing <b id="showingRowCount">5</b> out of <b id="rowCountTotal">25</b> entries
+                            </div>
+                            <ul class="pagination">
+                                <li class="page-item"><a href="#">Previous</a></li>
+                                <li class="page-item"><a href="#" class="page-link">1</a></li>
+                                <li class="page-item"><a href="#" class="page-link">2</a></li>
+                                <li class="page-item">
+                                    <a href="#" class="page-link">3</a>
+                                </li>
+                                <li class="page-item"><a href="#" class="page-link">4</a></li>
+                                <li class="page-item"><a href="#" class="page-link">5</a></li>
+                                <li class="page-item"><a href="#" class="page-link">Next</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
-          <table class="table table-hover table-bordered" id="myTable">
-            <thead class="table-dark">
-              <tr>
-                <th class="text-center">ID</th>
-                <th class="text-center">Name</th>
-                <th class="text-center" style="width: 200px">Price</th>
+        </div>
+        <div class="row"></div>
+    </div>
 
-                <th class="text-center">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="text-end">12345</td>
-                <td>thomashardy@mail.com</td>
-                <td class="text-end">250</td>
+    <!-- Add Modal HTML -->
+    <div
+            id="addProductModal"
+            class="modal fade"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form action="{{ url_for('AddProduct') }}" method = "POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Product</h4>
+                        <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label>ID</label>
+                            <input type="text" name="product_id"  class="form-control" required/>
+                        </div>
+                        <div class="form-group mt-3">
+                            <label>Name</label>
+                            <input type="text" name="product_name"  class="form-control" required/>
+                        </div>
 
-                <td>
-                  <button type="button" class="btn btn-edit btn-warning btn-sm">
-                    <i class="bx bx-pencil"></i>
-                    Edit
-                  </button>
+                        <div class="form-group mt-3">
+                            <label>Price</label>
+                            <input type="text" name="product_price"  class="form-control" required/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-success" value="Add"/>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
 
-                  <button
-                    type="button"
-                    class="btn btn-delete btn-danger btn-sm"
-                    data-bs-toggle="modal"
-                    data-bs-target="#deleteProductModal"
-                  >
-                    <i class="bx bx-trash-alt"></i>
-                    Delete
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-save btn-info btn-sm"
-                    name="save"
-                  >
-                    <i class="bx bxs-save"></i>
-                    Save
-                  </button>
-                  <button
-                    type="button"
-                    class="btn btn-cancel btn-danger btn-sm"
-                    name="cancel"
-                  >
-                  <i class='bx bxs-x-square'></i>
-                    Cancel
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="clearfix">
-            <div class="hint-text">
-              Showing <b id="showingRowCount">5</b> out of <b id="rowCountTotal">25</b> entries
+                    </div>
+                </form>
             </div>
-            <ul class="pagination">
-              <li class="page-item"><a href="#">Previous</a></li>
-              <li class="page-item"><a href="#" class="page-link">1</a></li>
-              <li class="page-item"><a href="#" class="page-link">2</a></li>
-              <li class="page-item">
-                <a href="#" class="page-link">3</a>
-              </li>
-              <li class="page-item"><a href="#" class="page-link">4</a></li>
-              <li class="page-item"><a href="#" class="page-link">5</a></li>
-              <li class="page-item"><a href="#" class="page-link">Next</a></li>
-            </ul>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="row"></div>
-</div>
-
-<!-- Add Modal HTML -->
-<div
-  id="addProductModal"
-  class="modal fade"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form action="#">
-        <div class="modal-header">
-          <h4 class="modal-title">Add Product</h4>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+    <!-- Delete Modal HTML -->
+    <div
+            id="deleteProductModal"
+            class="modal fade"
+            tabindex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+    >
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form>
+                    <div class="modal-header">
+                        <h4 class="modal-title">Delete Product</h4>
+                        <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                        ></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="h5">Are you sure you want to delete these Records?</p>
+                        <p class="text-warning">
+                            <small class="h5">This action cannot be undone.</small>
+                        </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+                            Cancel
+                        </button>
+                        <input type="submit" class="btn btn-danger" value="Delete"/>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="modal-body">
-          <div class="form-group">
-            <label>ID</label>
-            <input type="text" name="id" class="form-control" required />
-          </div>
-          <div class="form-group mt-3">
-            <label>Name</label>
-            <input type="text" name="name"class="form-control" required />
-          </div>
-
-          <div class="form-group mt-3">
-            <label>Price</label>
-            <input type="text" name="price"class="form-control" required />
-          </div>
-        </div>
-        <div class="modal-footer">
-          <input type="submit" class="btn btn-success" value="Add" />
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
-            Cancel
-          </button>
-
-        </div>
-      </form>
     </div>
-  </div>
-</div>
-<!-- Delete Modal HTML -->
-<div
-  id="deleteProductModal"
-  class="modal fade"
-  tabindex="-1"
-  aria-labelledby="exampleModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form>
-        <div class="modal-header">
-          <h4 class="modal-title">Delete Product</h4>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <p class="h5">Are you sure you want to delete these Records?</p>
-          <p class="text-warning">
-            <small class="h5">This action cannot be undone.</small>
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
-            Cancel
-          </button>
-          <input type="submit" class="btn btn-danger" value="Delete" />
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 {% endblock %} {% block script %}
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
-<script src="{{ url_for('static', filename='dashboard/jquery/jquery-3.6.1.min.js') }}"></script>
-<script>
-  $(document).ready(function () {
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    <script src="{{ url_for('static', filename='dashboard/jquery/jquery-3.6.1.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
 
-    // show number count of rows in table id myTable
+            // show number count of rows in table id myTable
 
-    var rowCountTotal = $('#myTable tr').length;
-    var showingRowCount = $('#myTable tr:visible').length;
-    $('#rowCountTotal').text(rowCountTotal - 1);
-    $('#showingRowCount').text(showingRowCount - 1);
+            var rowCountTotal = $('#myTable tr').length;
+            var showingRowCount = $('#myTable tr:visible').length;
+            $('#rowCountTotal').text(rowCountTotal - 1);
+            $('#showingRowCount').text(showingRowCount - 1);
 
-    // Filter table rows based on searched term
-    $("#search").on("keyup", function () {
-      var term = $(this).val().toLowerCase();
-      $("table tbody tr").each(function () {
-        $row = $(this);
-        var name = $row.find("td:nth-child(2)").text().toLowerCase();
-        console.log(name);
-        if (name.search(term) < 0) {
-          $row.hide();
-        } else {
-          $row.show();
+            // Filter table rows based on searched term
+            $("#search").on("keyup", function () {
+                var term = $(this).val().toLowerCase();
+                $("table tbody tr").each(function () {
+                    $row = $(this);
+                    var name = $row.find("td:nth-child(2)").text().toLowerCase();
+                    console.log(name);
+                    if (name.search(term) < 0) {
+                        $row.hide();
+                    } else {
+                        $row.show();
+                    }
+                });
+            });
+
+            //edit row on click btn edit
+            $(document).on("click", ".btn-edit", function () {
+                $(this)
+                    .parents("tr")
+                    .find("td:not(:last-child)")
+                    .each(function () {
+                        $(this).html(
+                            '<input type="text" class="form-control" value="' +
+                            $(this).text() +
+                            '">'
+                        );
+                    });
+                $(this).parents("tr").find(".btn-edit").toggle();
+                $(this).parents("tr").find(".btn-delete").toggle();
+                $(this).parents("tr").find(".btn-save").toggle();
+                $(this).parents("tr").find(".btn-cancel").toggle();
+            });
+
+            //save row on click btn save
+
+            //save edit row on click btn cancel
+            $(document).on("click", ".btn-save", function () {
+                $(this)
+                    .parents("tr")
+                    .find("td:not(:last-child)")
+                    .each(function () {
+                        $(this).html($(this).children("input").val());
+                    });
+                $(this).parents("tr").find(".btn-edit").toggle();
+                $(this).parents("tr").find(".btn-delete").toggle();
+                $(this).parents("tr").find(".btn-save").toggle();
+                $(this).parents("tr").find(".btn-cancel").toggle();
+            });
+
+            //on click btn Add Product then click btn save then add new row to table
+            $(document).on("click", ".btn-add", function () {
+                var empty = false;
+                var input = $(this).parents("tr").find('input[type="text"]');
+                input.each(function () {
+                    if (!$(this).val()) {
+                        $(this).addClass("error");
+                        empty = true;
+                    } else {
+                        $(this).removeClass("error");
+                    }
+                });
+                $(this).parents("tr").find(".error").first().focus();
+                if (!empty) {
+                    input.each(function () {
+                        $(this).parent("td").html($(this).val());
+                    });
+                    $(this).parents("tr").find(".btn-add").toggle();
+                    $(this).parents("tr").find(".btn-cancel").toggle();
+                    $(".add-new").removeAttr("disabled");
+                }
+            });
+
+
+
+
+            //add data on click btn add data to database
+
+
+            {#$("#addProductModal").on("submit", function () {#}
+            {#    var id = $("#addProductModal").find('input[name="id"]').val();#}
+            {#    var name = $("#addProductModal").find('input[name="name"]').val();#}
+            {#    var price = $("#addProductModal").find('input[name="price"]').val();#}
+            {#    var markup =#}
+            {#        "<tr><td class='text-end'>" +#}
+            {#        id +#}
+            {#        "</td><td>" +#}
+            {#        name +#}
+            {#        "</td><td class='text-end'>" +#}
+            {#        price +#}
+            {#        '</td><td><button type="button" class="btn btn-edit btn-warning btn-sm"><i class="bx bx-pencil"></i>Edit</button> <button type="button" class="btn btn-delete btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProductModal"><i class="bx bx-trash-alt"></i>Delete</button> <button type="button"class="btn btn-save btn-info btn-sm" name="save"><i class="bx bxs-save"></i> Save </button> <button type="button"class="btn btn-cancel btn-danger btn-sm" name="cancel"> <i class="bx bx-x"></i> Cancel </button>   </td></tr>';#}
+            {#    $("table tbody").append(markup);
+            });#}
+        });
+    </script>
+<script type="text/javascript">
+    var csrf_token = "{{ csrf_token() }}";
+
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrf_token);
+            }
         }
-      });
     });
-
-    //edit row on click btn edit
-    $(document).on("click", ".btn-edit", function () {
-      $(this)
-        .parents("tr")
-        .find("td:not(:last-child)")
-        .each(function () {
-          $(this).html(
-            '<input type="text" class="form-control" value="' +
-              $(this).text() +
-              '">'
-          );
-        });
-      $(this).parents("tr").find(".btn-edit").toggle();
-      $(this).parents("tr").find(".btn-delete").toggle();
-      $(this).parents("tr").find(".btn-save").toggle();
-      $(this).parents("tr").find(".btn-cancel").toggle();
-    });
-
-    //save row on click btn save
-
-    //save edit row on click btn cancel
-    $(document).on("click", ".btn-save", function () {
-      $(this)
-        .parents("tr")
-        .find("td:not(:last-child)")
-        .each(function () {
-          $(this).html($(this).children("input").val());
-        });
-      $(this).parents("tr").find(".btn-edit").toggle();
-      $(this).parents("tr").find(".btn-delete").toggle();
-      $(this).parents("tr").find(".btn-save").toggle();
-      $(this).parents("tr").find(".btn-cancel").toggle();
-    });
-
-    //add data on click btn add at add modal
-    $("#addProductModal").on("submit", function () {
-      var id = $("#addProductModal").find('input[name="id"]').val();
-      var name = $("#addProductModal").find('input[name="name"]').val();
-      var price = $("#addProductModal").find('input[name="price"]').val();
-      var markup =
-        "<tr><td class='text-end'>" +
-        id +
-        "</td><td>" +
-        name +
-        "</td><td class='text-end'>" +
-        price +
-        '</td><td><button type="button" class="btn btn-edit btn-warning btn-sm"><i class="bx bx-pencil"></i>Edit</button> <button type="button" class="btn btn-delete btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteProductModal"><i class="bx bx-trash-alt"></i>Delete</button> <button type="button"class="btn btn-save btn-info btn-sm" name="save"><i class="bx bxs-save"></i> Save </button> <button type="button"class="btn btn-cancel btn-danger btn-sm" name="cancel"> <i class="bx bx-x"></i> Cancel </button>   </td></tr>';
-      $("table tbody").append(markup);
-    });
-  });
 </script>
 
 {% endblock %}

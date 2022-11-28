@@ -6,6 +6,9 @@
     />
 
 {% endblock %} {% block body %}
+    {% if current_user.is_authenticated %}
+  Hi {{ fname," ", lname }}!
+{% endif %}
 
     <div class="content-home">
         <div class="row">
