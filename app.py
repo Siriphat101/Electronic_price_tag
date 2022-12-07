@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, make_response
 from flask_mysqldb import MySQL
-from flask_wtf.csrf import CSRFProtect,CSRFError
+from flask_wtf.csrf import CSRFProtect, CSRFError
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 from config import config
@@ -9,7 +9,6 @@ from config import config
 from models.ModelUser import ModelUser
 from models.ModelProduct import ModelProduct as MP
 from models.ModelDevice import ModelDevice as MD
-
 
 # entities
 from models.entities.User import User
@@ -39,7 +38,6 @@ app.secret_key = config['development'].SECRET_KEY
 
 
 # CRUD API
-
 
 
 @app.route('/')
@@ -76,7 +74,7 @@ def logout():
 # if error 401, redirect to login page
 @app.errorhandler(401)
 def page_not_found(e):
-    return redirect(url_for('login')), 401
+    return render_template("login.html")
 
 
 @app.route('/dashboard')
@@ -107,7 +105,6 @@ def Product():
 
 @app.route('/product/add', methods=['GET', 'POST'])
 def AddProduct():
-
     if request.method == 'POST':
         product = Product(0, request.form['product_id'], request.form['product_name'], request.form['product_price'])
         print(product)
@@ -115,9 +112,6 @@ def AddProduct():
         return redirect(url_for('Product'))
     else:
         return redirect(url_for('Product'))
-
-
-
 
 
 @app.route('/device')
@@ -131,6 +125,7 @@ def Device():
 def handle_csrf_error(e):
     return render_template('csrf_error.html', reason=e.description), 400
 
+
 @app.route('/setting')
 def Setting():
     return render_template('setting.html')
@@ -139,4 +134,4 @@ def Setting():
 if __name__ == '__main__':
     app.config.from_object(config['development'])
     csrf.init_app(app)
-    app.run()
+    app.run(debug=True)
