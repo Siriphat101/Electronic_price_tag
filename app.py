@@ -41,7 +41,7 @@ app.secret_key = config['development'].SECRET_KEY
 
 
 @app.route('/')
-def Home():  #
+def home():  #
 
     return render_template('index.html')
 
@@ -54,7 +54,7 @@ def login():
         if logged_user is not None:
             if logged_user.password:
                 login_user(logged_user)
-                return redirect(url_for('Dashboard'))
+                return redirect(url_for('dashboard'))
             else:
                 flash('Invalid password!!!')
                 return redirect(url_for('login'))
@@ -68,7 +68,7 @@ def login():
 @app.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('Home'))
+    return redirect(url_for('home'))
 
 
 # if error 401, redirect to login page
@@ -79,56 +79,19 @@ def page_not_found(e):
 
 @app.route('/dashboard')
 @login_required
-def Dashboard():
+def dashboard():
     print(current_user.fname, current_user.lname)
-
-    # print all products
-    # for p in MP.get_all_products(db):
-    #     print(p.product_name)
 
     return render_template('dashboard.html')
 
 
-@app.route('/product')
-def Product():
-    products = MP.get_all_products(db)
-    # devices = MD.get_all_devices(db)
-
-    # for i in products:
-    #     print(i.product_name)
-    # for i in devices:
-    #     print(i.esp_name)
-    #
-
-    return render_template('product.html', products=products)
+@app.route('/products')
+@login_required
+def products():
+    products = MP.get_all(db)
+    return render_template('products.html', products=products)
 
 
-@app.route('/product/add', methods=['GET', 'POST'])
-def AddProduct():
-    if request.method == 'POST':
-        product = Product(0, request.form['product_id'], request.form['product_name'], request.form['product_price'])
-        print(product)
-        # MP.add_product(db, product)
-        return redirect(url_for('Product'))
-    else:
-        return redirect(url_for('Product'))
-
-
-@app.route('/device')
-def Device():
-    devices = MD.get_all_devices(db)
-
-    return render_template('device.html', devices=devices)
-
-
-@app.errorhandler(CSRFError)
-def handle_csrf_error(e):
-    return render_template('csrf_error.html', reason=e.description), 400
-
-
-@app.route('/setting')
-def Setting():
-    return render_template('setting.html')
 
 
 if __name__ == '__main__':
