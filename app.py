@@ -41,7 +41,7 @@ app.secret_key = config['development'].SECRET_KEY
 
 
 @app.route('/')
-def home():  #
+def home():  
 
     return render_template('index.html')
 
@@ -88,9 +88,101 @@ def dashboard():
 @app.route('/products')
 @login_required
 def products():
-    products = MP.get_all(db)
-    return render_template('products.html', products=products)
+    products = MP.get_all_products(db)
+    
+    return render_template('product.html', products=products)
 
+@app.route('/add_product', methods=['POST'])
+@login_required
+def add_product():
+    if request.method == 'POST':
+        try:
+            product_id = request.form['product_id']
+            product_name = request.form['product_name']
+            product_price = request.form['product_price']
+            
+            cur = db.connection.cursor()
+            
+            #  check product_id and product_price is number
+            if product_id.isnumeric() and product_price.isnumeric():
+                
+                
+                cur.execute("SELECT product_id FROM products ")
+                check_id_duplicate = cur.fetchall()
+                print(check_id_duplicate)
+                
+                
+                # check product_id is not duplicate 
+                
+                if product_id is not check_id_duplicate:
+                
+                    cur.execute("INSERT INTO products (product_id, product_name, product_price) VALUES (%s, %s,%s)", (product_id, product_name, product_price))
+                    db.connection.commit()
+                    # print("Product added successfully")
+                    flash("success add product")
+                    return redirect(url_for('product'))
+                else:
+                    # print("product_id is duplicate")
+                    flash("id is duplicate")
+            else:
+                flash("id and price must be number")
+                # print("Product id and price must be number")
+            
+        
+        except Exception as e:
+            raise e
+
+        finally:
+            return redirect(url_for('products'))
+
+@app.route('/update_product/<id>', methods=['POST'])
+@login_required
+def update_product(id):
+    if request.method == 'POST':
+        try:
+            product_id = request.form['product_id']
+            product_name = request.form['product_name']
+            product_price = request.form['product_price']
+            
+            
+            
+            # check product_id and product_price is number
+            if product_id.isnumeric() and product_price.isnumeric():
+                cur = db.connection.cursor()
+                cur.execute("SELECT product_id FROM products ")
+                check_id_duplicate = cur.fetchall()
+                
+                # check product_id is not duplicate
+                if product_id is not check_id_duplicate:
+                    
+                    sql = "UPDATE products SET product_id = %s, product_name = %s, product_price = %s WHERE id = %s"
+                    val = (product_id, product_name, product_price, id)
+                    
+                    cur.execute(sql, val)
+                
+                    db.connection.commit()
+                    flash("success update")
+                    return redirect(url_for('products'))
+                else:
+                    flash("id is duplicate")
+                    
+            else:
+                flash("id and price must be number")
+        except Exception as e:
+            raise e
+        
+        finally:
+            return redirect(url_for('products'))
+  
+
+@app.route('/delete_product/<id>', methods=['GET'])
+@login_required
+def delete_product(id):
+    
+    cur = db.connection.cursor()
+    cur.execute("DELETE FROM products WHERE id = %s",(id,))
+    db.connection.commit()
+    return redirect(url_for('products'))
 
 
 

@@ -392,7 +392,7 @@ hr {
 }
 .small,
 small {
-  font-size: 80%;
+  font-size: 100%;
   font-weight: 400;
 }
 .mark,
@@ -9635,7 +9635,7 @@ a:focus {
     width: 14rem;
   }
   .sidebar .nav-item .nav-link i {
-    font-size: 1.5rem;
+    font-size: 1.9rem;
     margin-right: 0.25rem;
   }
   .sidebar .nav-item .nav-link span {
@@ -10325,9 +10325,7 @@ body.sidebar-toggled footer.sticky-footer {
 }
 
 /* hover menu  */
-.nav-item:hover {
+/* .nav-item:hover {
   background: #59C1BD;
-  
-  
-}
+} */
 
