@@ -1,2 +1,1 @@
-
-    cur = db.connection.cursor()
+client.loop_forever()
