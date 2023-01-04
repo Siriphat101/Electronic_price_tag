@@ -1,5 +1,5 @@
 {% extends 'layout.html' %} {% block head %}
-<title>Product</title>
+<title>Device</title>
 <!-- dataTables -->
 <link
   rel="stylesheet"
@@ -10,7 +10,7 @@
 {% endblock %} {% block content %}
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-  <h1 class="h2 mb-0 text-gray-800">Product</h1>
+  <h1 class="h2 mb-0 text-gray-800">Device</h1>
   <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
       ><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a
     > -->
@@ -23,15 +23,15 @@
   <div
     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
   >
-    <h6 class="m-0 font-weight-bold text-primary">Product Table</h6>
+    <h6 class="m-0 font-weight-bold text-primary">Device Table</h6>
     <div class="ml-auto">
       <button
         type="button"
         class="add-product btn btn-primary btn-sm"
         data-bs-toggle="modal"
-        data-bs-target="#addProductModal"
+        data-bs-target="#addDeviceModal"
       >
-        Add Product
+        Add Device
       </button>
     </div>
   </div>
@@ -43,25 +43,25 @@
     {% if message == "success add product" %}
     <div class="alert alert-success d-flex justify-content-between" role="alert">
       <div class="text-center">{{message}}</div>
-      <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close">X<i class="fa-solid fa-xmark-large"></i></button>
+      <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-xmark-large"></i></button>
     </div>
     {% endif %}
     {% if message == "id is duplicate" %}
     <div class="alert alert-danger d-flex justify-content-between" role="alert">
       <div class="text-center">{{message}}</div>
-      <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close">X<i class="fa-solid fa-xmark-large"></i></button>
+      <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-xmark-large"></i></button>
     </div>
     {% endif %}
     {% if message == "id and price must be number" %}
     <div class="alert alert-danger d-flex justify-content-between" role="alert">
       <div class="text-center">{{message}}</div>
-      <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close">X<i class="fa-solid fa-xmark-large"></i></button>
+      <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-xmark-large"></i></button>
     </div>
     {% endif %}
     {% if message == "success update" %}
     <div class="alert alert-success d-flex justify-content-between" role="alert">
       <div class="text-center">{{message}}</div>
-      <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close">X<i class="fa-solid fa-xmark-large"></i></button>
+      <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-xmark-large"></i></button>
     </div>
     {% endif %}
     {% endfor %}
@@ -78,39 +78,40 @@
       >
         <thead>
           <tr>
-            <th class="text-center" name="product_id" style="width: 100px">ID</th>
-            <th class="text-center" name="product_name">Name</th>
-            <th class="text-center" name="product_price" style="width: 150px">Price</th>
+            <th class="text-center" name="chipID" style="width: 100px">ChipID</th>
+            <th class="text-center" name="device_name">Name</th>
+            <th class="text-center" name="status" style="width: 150px">Status</th>
             <th class="text-center" name="action" style="width: 125px">Action</th>
           </tr>
         </thead>
         <tbody>
          
-          {% for product in products %}
+          {% for device in devices %}
             <tr>
-                <!-- <td>{{product.id}}</td> -->
-                <td class="text-right">{{product.product_id}}</td>
-                <td>{{product.product_name}}</td>
-                <td class="text-center">{{product.product_price}}</td>
+                
+                <td class="text-right">{{device.chipID}}</td>
+                <td>{{device.name}}</td>
+                <td class="text-center">{% if device.status == 1 %}ON{%elif device.status == 0%}OFF{% else %}ERROR{% endif %}
+                  </td>
                 <td class="text-center">
                 <a
-                    href="/update_product/{{product.id}}"
+                    href="/update_device/{{device.id}}"
                     class="btn btn-warning btn-sm"
                     data-bs-toggle="modal"
-                    data-bs-target="#updateProductModal{{product.id}}"
+                    data-bs-target="#updateDeviceModal{{device.id}}"
                     >Edit</a
                 >
                 <a
-                href="/delete_product/{{product.id}}"
+                href="/delete_device/{{device.id}}"
                 class="btn btn-danger btn-sm"
                 onclick="return confirm('Are You Sure For Delete?')"
                 >Delete</a
               >
                 </td>
             </tr>
-            <!-- Update product Modal -->
+            <!-- Update device Modal -->
             <div
-                id="updateProductModal{{product.id}}"
+                id="updateDeviceModal{{device.id}}"
                 class="modal fade"
                 tabindex="-1"
                 aria-labelledby="exampleModalLabel"
@@ -118,14 +119,14 @@
             >
                 <div class="modal-dialog">
                 <div class="modal-content">
-                    <form action="/update_product/{{product.id}}" method="POST">
+                    <form action="/update_device/{{device.id}}" method="POST">
                     <input
                         type="hidden"
                         name="csrf_token"
                         value="{{ csrf_token() }}"
                     />
                     <div class="modal-header">
-                        <h4 class="modal-title">Update Product</h4>
+                        <h4 class="modal-title">Update Device<h4>
                         <button
                         type="button"
                         class="btn btn-close btn-outline-secondary btn-sm"
@@ -137,12 +138,12 @@
                     </div>
                     <div class="modal-body">
                         <div class="form-group">
-                        <label>ID</label>
+                        <label>Chip ID</label>
                         <input
                             type="text"
-                            name="product_id"
+                            name="chipID"
                             class="form-control"
-                            value="{{product.product_id}}"
+                            value="{{device.chipID}}"
                             required
                         />
                         </div>
@@ -150,25 +151,16 @@
                         <label>Name</label>
                         <input
                             type="text"
-                            name="product_name"
+                            name="device_name"
                             class="form-control"
-                            value="{{product.product_name}}"
+                            value="{{device.name}}"
                             required
                         />
                         </div>
 
-                        <div class="form-group mt-3">
-                        <label>Price</label>
-                        <input
-                            type="text"
-                            name="product_price"
-                            class="form-control"
-                            value="{{product.product_price}}"
-                            required
-                        />
-                        </div>
+                        
                     </div>
-                    <input type="hidden" class="form-control" name="id" value="product.id">
+                    <input type="hidden" class="form-control" name="id" value="device.id">
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-success" value="Add" />
                         <button
@@ -191,9 +183,9 @@
   </div>
 </div>
 
-<!-- add product Modal -->
+<!-- add device Modal -->
 <div
-  id="addProductModal"
+  id="addDeviceModal"
   class="modal fade"
   tabindex="-1"
   aria-labelledby="exampleModalLabel"
@@ -201,10 +193,10 @@
 >
   <div class="modal-dialog">
     <div class="modal-content">
-      <form action="{{ url_for('add_product') }}" method="POST">
+      <form action="{{ url_for('add_device') }}" method="POST">
         <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
         <div class="modal-header">
-          <h4 class="modal-title">Add Product</h4>
+          <h4 class="modal-title">Add Device</h4>
           <button
             type="button"
             class="btn btn-close btn-outline-secondary btn-sm"
@@ -216,10 +208,10 @@
         </div>
         <div class="modal-body">
           <div class="form-group">
-            <label>ID</label>
+            <label>ChipID</label>
             <input
               type="text"
-              name="product_id"
+              name="chipID"
               class="form-control"
               required
             />
@@ -228,21 +220,12 @@
             <label>Name</label>
             <input
               type="text"
-              name="product_name"
+              name="device_name"
               class="form-control"
               required
             />
           </div>
 
-          <div class="form-group mt-3">
-            <label>Price</label>
-            <input
-              type="text"
-              name="product_price"
-              class="form-control"
-              required
-            />
-          </div>
         </div>
         <div class="modal-footer">
           <input type="submit" class="btn btn-success" value="Add" />

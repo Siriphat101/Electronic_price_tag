@@ -1,9 +1,11 @@
 
 class Device():
 
-    def __init__(self, esp_id, esp_chip_id, esp_name):
-        self.esp_id = esp_id
-        self.esp_chip_id = esp_chip_id
-        self.esp_name = esp_name
-
+    def __init__(self, id, chipID, name,status):
+        self.id = id
+        self.chipID = chipID
+        self.name = name
+        self.status = status
+        
+    
 

@@ -1,2 +1,1 @@
-
-    cur = db.connection.cursor()
+error_devices

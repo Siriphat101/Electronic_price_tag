@@ -11,7 +11,7 @@
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-  <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+  <h1 class="h2 mb-0 text-gray-800">Dashboard</h1>
   <!-- <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"
     ><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a
   > -->
@@ -29,7 +29,7 @@
             >
             devices total
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">40,000</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count[0]}}</div>
           </div>
           <div class="col-auto">
             <i class='bx bxs-devices text-gray-300 bx-lg'></i>
@@ -40,6 +40,7 @@
   </div>
 
   <!-- Earnings (Monthly) Card Example -->
+  
   <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-success shadow h-100 py-2">
       <div class="card-body">
@@ -50,7 +51,7 @@
             >
             devices online
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">15,000</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count[1]}}</div>
           </div>
           <div class="col-auto">
             <i class='bx bx-play-circle text-gray-300 bx-lg'></i>
@@ -72,7 +73,7 @@
             >
             devices offline
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">15,000</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count[2]}}</div>
           </div>
           <div class="col-auto">
             <i class='bx bx-power-off text-gray-300 bx-lg'></i>
@@ -94,7 +95,7 @@
             >
               devices error
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">{{error_devices}}{{count[3]}}</div>
           </div>
           <div class="col-auto">
             <i class='bx bxs-error-alt bx-lg text-gray-300'></i>
@@ -111,7 +112,7 @@
 
             <!-- Card Header -->
             <div class="card-header py-3 d-flex flex-row align-items-center ">
-                <h6 class="m-0 font-weight-bold text-primary">Table</h6>
+                <h6 class="m-0 font-weight-bold text-primary">Activities Table</h6>
             </div>
 
             <!-- Card Body -->
