@@ -11,7 +11,7 @@ class ModelDevice():
             rows = cursor.fetchall()
             devices = []
             for row in rows:
-                device = Device(row[0], row[1], row[2], row[3])
+                device = Device(row[0], row[1], row[2], row[3], row[4])
                 devices.append(device)
             return devices
         except Exception as e:

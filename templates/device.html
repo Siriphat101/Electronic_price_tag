@@ -64,6 +64,12 @@
       <button type="button" class="btn-close text-end" data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-xmark-large"></i></button>
     </div>
     {% endif %}
+    {% if message == "error" %}
+    <div class="alert alert-danger d-flex justify-content-between" role="alert">
+      <div class="text-center">{{message}}</div>
+      <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close"><i class="fa-solid fa-xmark-large"></i></button>
+    </div>
+    {% endif %}
     {% endfor %}
     {% endif %}
     {% endwith %}
@@ -80,6 +86,7 @@
           <tr>
             <th class="text-center" name="chipID" style="width: 100px">ChipID</th>
             <th class="text-center" name="device_name">Name</th>
+            <th class="text-center" name="product_id" style="width: 150px">ProductID</th>
             <th class="text-center" name="status" style="width: 150px">Status</th>
             <th class="text-center" name="action" style="width: 125px">Action</th>
           </tr>
@@ -91,7 +98,17 @@
                 
                 <td class="text-right">{{device.chipID}}</td>
                 <td>{{device.name}}</td>
-                <td class="text-center">{% if device.status == 1 %}ON{%elif device.status == 0%}OFF{% else %}ERROR{% endif %}
+                <td class="text-right">
+                  {% if device.product_id == 0 %}
+                  {% else %}{{device.product_id}}
+                  {% endif %}
+                </td>
+                <td class="text-center">
+                  {% if device.status == 0 %}OFF
+                  {% elif device.status == 1 %}ON
+                  {% else %}ERROR
+                  {% endif %}
+                  
                   </td>
                 <td class="text-center">
                 <a
@@ -157,6 +174,15 @@
                             required
                         />
                         </div>
+                        <div class="form-group mt-3">
+                          <label>ProductID</label>
+                          <select name="product_id" id="product_id">
+                            {% for id in product_id %}
+                            <option value="{{id}}">{{id}}</option>
+                    
+                            {% endfor %}
+                          </select>
+                          </div>
 
                         
                     </div>

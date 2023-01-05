@@ -62,5 +62,20 @@ class ModelProduct:
             raise Exception(e)
         
         
+    @classmethod
+    def get_product_id(self,db):
+        try:
+            cursor = db.connection.cursor()
+            sql = """SELECT product_id FROM products"""
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            all_id_product = []
+            for row in rows:
+                all_id_product.append(row[0])
+                # print(all_id_product)
+            return all_id_product
+        except Exception as e:
+            raise Exception(e)
+        
     
             
