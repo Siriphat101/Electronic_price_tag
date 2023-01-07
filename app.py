@@ -1,6 +1,6 @@
 # pythonanywhere mintball777888999::testpythondeploy777
 from sqlite3 import IntegrityError
-from flask import Flask, render_template, request, url_for, redirect, flash, jsonify, make_response
+from flask import Flask, render_template, request, url_for, redirect, flash
 from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
@@ -11,12 +11,14 @@ from config import config
 from models.ModelUser import ModelUser
 from models.ModelProduct import ModelProduct as MP
 from models.ModelDevice import ModelDevice as MD
+from models.ModelItem import ModelItem as MI
+
 
 # entities
 from models.entities.User import User
-from models.entities.Product import Product
+# from models.entities.Product import Product
 # from models.CRUD import CRUD
-from models.entities.Device import Device
+# from models.entities.Device import Device
 
 app = Flask(__name__)
 
@@ -78,19 +80,25 @@ def logout():
     return redirect(url_for('home'))
 
 
-# if error 401, redirect to login page
 @app.errorhandler(401)
 def page_not_found(e):
     return render_template("login.html")
 
+@app.errorhandler(500)
+def page_not_found(e):
+    return render_template("home.html")
+
 
 # Global variables
-count = []
 
 
 @app.route('/dashboard')
 @login_required
 def dashboard():
+
+    count = []
+
+    ItemData = MI.getItem(db)
 
     total_devices = MD.count_device(db)
     on_devices = MD.statusON_device(db)
@@ -101,7 +109,7 @@ def dashboard():
     count.append(off_devices)
     count.append(error_devices)
 
-    return render_template('dashboard.html', count=count)
+    return render_template('dashboard.html', count=count, ItemData=ItemData)
 
 # success
 
@@ -229,7 +237,7 @@ def add_device():
                 return redirect(url_for('devices'))
 
         except Exception as e:
-            flash("error :", e)
+            flash("error")
             raise e
 
         finally:

@@ -1,13 +1,11 @@
-{% extends 'layout.html'%} 
-
-
-{% block head %}
-    <title>Dashboard</title>
-    <!-- dataTables -->
-    <link rel="stylesheet" href="{{url_for('static',filename='css/dataTables.bootstrap5.min.css')}}">
-{% endblock %}
-
-{% block content %}
+{% extends 'layout.html'%} {% block head %}
+<title>Dashboard</title>
+<!-- dataTables -->
+<link
+  rel="stylesheet"
+  href="{{url_for('static',filename='css/dataTables.bootstrap5.min.css')}}"
+/>
+{% endblock %} {% block content %}
 
 <!-- Page Heading -->
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -27,12 +25,14 @@
             <div
               class="text-m font-weight-bold text-primary text-uppercase mb-1"
             >
-            devices total
+              devices total
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count[0]}}</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {{count[0]}}
+            </div>
           </div>
           <div class="col-auto">
-            <i class='bx bxs-devices text-gray-300 bx-lg'></i>
+            <i class="bx bxs-devices text-gray-300 bx-lg"></i>
           </div>
         </div>
       </div>
@@ -40,7 +40,7 @@
   </div>
 
   <!-- Earnings (Monthly) Card Example -->
-  
+
   <div class="col-xl-3 col-md-6 mb-4">
     <div class="card border-left-success shadow h-100 py-2">
       <div class="card-body">
@@ -49,13 +49,14 @@
             <div
               class="text-m font-weight-bold text-success text-uppercase mb-1"
             >
-            devices online
+              devices online
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count[1]}}</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {{count[1]}}
+            </div>
           </div>
           <div class="col-auto">
-            <i class='bx bx-play-circle text-gray-300 bx-lg'></i>
-            
+            <i class="bx bx-play-circle text-gray-300 bx-lg"></i>
           </div>
         </div>
       </div>
@@ -71,18 +72,19 @@
             <div
               class="text-m font-weight-bold text-danger text-uppercase mb-1"
             >
-            devices offline
+              devices offline
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{count[2]}}</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {{count[2]}}
+            </div>
           </div>
           <div class="col-auto">
-            <i class='bx bx-power-off text-gray-300 bx-lg'></i>
+            <i class="bx bx-power-off text-gray-300 bx-lg"></i>
           </div>
         </div>
       </div>
     </div>
   </div>
-
 
   <!-- Pending Requests Card Example -->
   <div class="col-xl-3 col-md-6 mb-4">
@@ -95,10 +97,12 @@
             >
               devices error
             </div>
-            <div class="h5 mb-0 font-weight-bold text-gray-800">{{error_devices}}{{count[3]}}</div>
+            <div class="h5 mb-0 font-weight-bold text-gray-800">
+              {{error_devices}}{{count[3]}}
+            </div>
           </div>
           <div class="col-auto">
-            <i class='bx bxs-error-alt bx-lg text-gray-300'></i>
+            <i class="bx bxs-error-alt bx-lg text-gray-300"></i>
           </div>
         </div>
       </div>
@@ -107,119 +111,59 @@
 </div>
 
 <div class="row">
-    <div class="col-xl-8 col-lg-7">
-        <div class="card shadow mb-4">
+  <div class="col-xl-8 col-lg-7">
+    <div class="card shadow mb-4">
+      <!-- Card Header -->
+      <div class="card-header py-3 d-flex flex-row align-items-center">
+        <h6 class="m-0 font-weight-bold text-primary">Activities Table</h6>
+      </div>
 
-            <!-- Card Header -->
-            <div class="card-header py-3 d-flex flex-row align-items-center ">
-                <h6 class="m-0 font-weight-bold text-primary">Activities Table</h6>
-            </div>
-
-            <!-- Card Body -->
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th name="node_name">Node</th>
-                                <th name="product_name">Name</th>
-                                <th name="product_price">Price</th>
-                                <th name="status">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Node 1</td>
-                                <td>มาม่า</td>
-                                <td>7</td>
-                                <td>Active</td>
-                            </tr>
-                            <tr>
-                                <td>Node 2</td>
-                                <td>ขนม</td>
-                                <td>5</td>
-                                <td>Active</td>
-                            </tr>
-                            <tr>
-                                <td>Node 2</td>
-                                <td>ขนม</td>
-                                <td>5</td>
-                                <td><select name="cars" id="cars">
-                                    <option value="volvo">Volvo</option>
-                                    <option value="saab">Saab</option>
-                                    <option value="opel">Opel</option>
-                                    <option value="audi">Audi</option>
-                                  </select></td>
-                            </tr>
-                            <tr>
-                                <td>Node 2</td>
-                                <td>ขนม</td>
-                                <td>5</td>
-                                <td>Active</td>
-                            </tr>
-                            <tr>
-                                <td>Node 2</td>
-                                <td>ขนม</td>
-                                <td>5</td>
-                                <td>Active</td>
-                            </tr>
-                            <tr>
-                                <td>Node 2</td>
-                                <td>ขนม</td>
-                                <td>5</td>
-                                <td>Active</td>
-                            </tr>
-                            <tr>
-                                <td>Node 2</td>
-                                <td>ขนม</td>
-                                <td>5</td>
-                                <td>Active</td>
-                            </tr>
-                            <tr>
-                                <td>Node 2</td>
-                                <td>ขนม</td>
-                                <td>5</td>
-                                <td>Active</td>
-                            </tr>
-                            <tr>
-                                <td>Node 2</td>
-                                <td>ขนม</td>
-                                <td>5</td>
-                                <td>Active</td>
-                            </tr>
-                            <tr>
-                                <td>Node 2</td>
-                                <td>ขนม</td>
-                                <td>5</td>
-                                <td>Active</td>
-                            </tr>
-                            <tr>
-                                <td>Node 2</td>
-                                <td>ขนม</td>
-                                <td>5</td>
-                                <td>Active</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            
+      <!-- Card Body -->
+      <div class="card-body">
+        <div class="table-responsive">
+          <table
+            class="table table-bordered"
+            id="dataTable"
+            width="100%"
+            cellspacing="0"
+          >
+            <thead>
+              <tr>
+                <th class="text-center" name="node_name">Node</th>
+                <th class="text-center" name="product_name">Name</th>
+                <th class="text-center" name="product_price">Price</th>
+                <th class="text-center" name="status">Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in ItemData %}
+              <tr>
+                <td class="text-center">{{item.deviceName}}</td>
+                <td>{{item.productName}}</td>
+                <td class="text-center">{{item.productPrice}}</td>
+                <td class="text-center">
+                  {% if item.status == 0 %}OFF {% elif item.status == 1 %}ON 
+                  {% elif item.status == 2 %}ERROR
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
         </div>
-        
-
+      </div>
     </div>
-    <div class="col-xl-4 col-lg-5"></div>
+  </div>
+  <div class="col-xl-4 col-lg-5"></div>
 </div>
-{% endblock %}
-
-{% block script%}
+{% endblock %} {% block script%}
 <!-- jquery dataTables -->
 <script src="{{url_for('static',filename='js/jquery.dataTables.min.js')}}"></script>
 <!-- bootstrap dataTables -->
 <script src="{{url_for('static',filename='js/dataTables.bootstrap5.min.js')}}"></script>
 <script>
-    $(document).ready(function(){
-        $('#dataTable').DataTable();
-    });
+  $(document).ready(function () {
+    $("#dataTable").DataTable();
+  });
 </script>
 {% endblock %}
