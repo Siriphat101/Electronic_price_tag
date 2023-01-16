@@ -5,6 +5,13 @@ from flask_mysqldb import MySQL
 from flask_wtf.csrf import CSRFProtect, CSRFError
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
+import json
+# MQTT library
+import time
+import paho.mqtt.client as paho
+from paho import mqtt
+
+
 from config import config
 
 # models
@@ -42,7 +49,43 @@ app.config['MYSQL_DB'] = config['development'].MYSQL_DB
 app.secret_key = config['development'].SECRET_KEY
 
 
-# CRUD API
+# MQTT setting
+# setting callbacks for different events to see if it works, print the message etc.
+def on_connect(client, userdata, flags, rc, properties=None):
+    print("CONNACK received with code %s." % rc)
+
+# with this callback you can see if your publish was successful
+def on_publish(client, userdata, mid, properties=None):
+    print("mid: " + str(mid))
+
+# print which topic was subscribed to
+def on_subscribe(client, userdata, mid, granted_qos, properties=None):
+    print("Subscribed: " + str(mid) + " " + str(granted_qos))
+
+# print message, useful for checking if it was successful
+def on_message(client, userdata, msg):
+    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
+
+# using MQTT version 5 here, for 3.1.1: MQTTv311, 3.1: MQTTv31
+# userdata is user defined data of any type, updated by user_data_set()
+# client_id is the given name of the client
+client = paho.Client(client_id="jame", userdata=None, protocol=paho.MQTTv5)
+client.on_connect = on_connect
+
+# enable TLS for secure connection
+client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
+# set username and password
+client.username_pw_set("flaskweb", "123456789")
+# connect to HiveMQ Cloud on port 8883 (default for MQTT)
+client.connect("c48a91514ddc4f8e8a4a69e6aa76c4b2.s2.eu.hivemq.cloud", 8883)
+
+# setting callbacks, use separate functions like above for better visibility
+client.on_subscribe = on_subscribe
+client.on_message = on_message
+client.on_publish = on_publish
+
+# subscribe to all topics of encyclopedia by using the wildcard "#"
+client.subscribe("price_tag1", qos=1)
 
 
 @app.route('/')
@@ -51,8 +94,6 @@ def home():
     return render_template('index.html')
 
 # success
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -72,8 +113,6 @@ def login():
         return render_template('login.html')
 
 # success
-
-
 @app.route('/logout')
 def logout():
     logout_user()
@@ -88,8 +127,6 @@ def page_not_found(e):
 def page_not_found(e):
     return render_template("home.html")
 
-
-# Global variables
 
 
 @app.route('/dashboard')
@@ -112,8 +149,6 @@ def dashboard():
     return render_template('dashboard.html', count=count, ItemData=ItemData)
 
 # success
-
-
 @app.route('/products')
 @login_required
 def products():
@@ -121,6 +156,7 @@ def products():
     return render_template('product.html', products=products)
 
 # success
+
 
 
 @app.route('/add_product', methods=['POST'])
@@ -131,6 +167,17 @@ def add_product():
             product_id = request.form['product_id']
             product_name = request.form['product_name']
             product_price = request.form['product_price']
+            
+            data_json = {
+            "target": "single",
+            "node_id": product_id,
+            "data": [
+                product_name,
+                product_price
+            ]
+            }
+
+            json_data = json.dumps(data_json)
 
             cur = db.connection.cursor()
 
@@ -146,13 +193,16 @@ def add_product():
                 db.connection.commit()
                 # print("Product added successfully")
                 flash("success add product")
-                return redirect(url_for('product'))
+                client.publish("price_tag1", payload= json_data, qos=1)
+                return redirect(url_for('products'))
+            
 
             else:
                 flash("id and price must be number")
                 # print("Product id and price must be number")
 
         except Exception as e:
+            print(e)
             flash("id is duplicate")
             raise e
 
@@ -183,6 +233,7 @@ def update_product(id):
 
                 db.connection.commit()
                 flash("success update")
+                client.publish("price_tag1", payload="success add product", qos=1)
                 return redirect(url_for('products'))
 
             else:
@@ -206,6 +257,7 @@ def delete_product(id):
     cur = db.connection.cursor()
     cur.execute("DELETE FROM products WHERE id = %s", (id,))
     db.connection.commit()
+    client.publish("price_tag1", payload="delete product", qos=1)
     return redirect(url_for('products'))
 
 

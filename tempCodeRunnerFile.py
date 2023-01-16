@@ -1,1 +1,1 @@
-error_devices
+encyclopedia/temperature
