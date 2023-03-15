@@ -21,15 +21,16 @@ class ModelProduct:
             raise Exception(e)
 
     @classmethod
-    def get_by_id(self, db, id):
+    def get_by_id(self, db, product_id):
         try:
             cursor = db.connection.cursor()
-            sql = """SELECT id, product_id, product_name, product_price FROM products WHERE id = '{}'""".format(
-                id)
+            sql = """SELECT  product_name, product_price FROM products WHERE product_id = '{}'""".format(
+                product_id)
             cursor.execute(sql)
             row = cursor.fetchone()
             if row is not None:
-                return Product(row[0], row[1], row[2], row[3])
+                # print(row)
+                return Product(row[0], row[1])
             else:
                 return None
         except Exception as e:

@@ -1,47 +1,148 @@
+from sqlite3 import IntegrityError
+from flask import Flask, render_template, request, url_for, redirect, flash
+from flask_mysqldb import MySQL
+from flask_wtf.csrf import CSRFProtect, CSRFError
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from flask_mqtt import Mqtt
+from datetime import datetime
+
+import json
+# MQTT library
 import time
-import paho.mqtt.client as paho
-from paho import mqtt
+import calendar
 
-# setting callbacks for different events to see if it works, print the message etc.
-def on_connect(client, userdata, flags, rc, properties=None):
-    print("CONNACK received with code %s." % rc)
 
-# with this callback you can see if your publish was successful
-def on_publish(client, userdata, mid, properties=None):
-    print("mid: " + str(mid))
+from config import config
 
-# print which topic was subscribed to
-def on_subscribe(client, userdata, mid, granted_qos, properties=None):
-    print("Subscribed: " + str(mid) + " " + str(granted_qos))
+# models
+from models.ModelUser import ModelUser
+from models.ModelProduct import ModelProduct as MP
+from models.ModelDevice import ModelDevice as MD
+from models.ModelItem import ModelItem as MI
 
-# print message, useful for checking if it was successful
-def on_message(client, userdata, msg):
-    print(msg.topic + " " + str(msg.qos) + " " + str(msg.payload))
 
-# using MQTT version 5 here, for 3.1.1: MQTTv311, 3.1: MQTTv31
-# userdata is user defined data of any type, updated by user_data_set()
-# client_id is the given name of the client
-client = paho.Client(client_id="", userdata=None, protocol=paho.MQTTv5)
-client.on_connect = on_connect
+# entities
+from models.entities.User import User
 
-# enable TLS for secure connection
-client.tls_set(tls_version=mqtt.client.ssl.PROTOCOL_TLS)
-# set username and password
-client.username_pw_set("flaskweb", "123456789")
-# connect to HiveMQ Cloud on port 8883 (default for MQTT)
-client.connect("c48a91514ddc4f8e8a4a69e6aa76c4b2.s2.eu.hivemq.cloud", 8883)
 
-# setting callbacks, use separate functions like above for better visibility
-client.on_subscribe = on_subscribe
-client.on_message = on_message
-client.on_publish = on_publish
+app = Flask(__name__)
 
-# subscribe to all topics of encyclopedia by using the wildcard "#"
-client.subscribe("price_tag1", qos=1)
 
-# a single publish, this can also be done in loops, etc.
-client.publish("price_tag1", payload="ruy", qos=1)
+# config MQTT
+app.config['MQTT_BROKER_URL'] = 'broker.emqx.io'
+app.config['MQTT_BROKER_PORT'] = 1883
+# Set this item when you need to verify username and password
+app.config['MQTT_USERNAME'] = ''
+# Set this item when you need to verify username and password
+app.config['MQTT_PASSWORD'] = ''
+app.config['MQTT_KEEPALIVE'] = 5  # Set KeepAlive time in seconds
+# If your broker supports TLS, set it True
+app.config['MQTT_TLS_ENABLED'] = False
 
-# loop_forever for simplicity, here you need to stop the loop manually
-# you can also use loop_start and loop_stop
-client.loop_forever()
+# config database
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:@localhost:3306/testpythondeploy777'
+app.config['MYSQL_HOST'] = config['development'].MYSQL_HOST
+app.config['MYSQL_USER'] = config['development'].MYSQL_USER
+app.config['MYSQL_PASSWORD'] = config['development'].MYSQL_PASSWORD
+app.config['MYSQL_DB'] = config['development'].MYSQL_DB
+
+
+mqtt_client = Mqtt(app)
+db = MySQL(app)
+csrf = CSRFProtect(app)
+
+
+@mqtt_client.on_connect()
+def handle_connect(client, userdata, flags, rc):
+    if rc == 0:
+        print('Connected successfully')
+        # mqtt_client.subscribe(topic)  # subscribe topic
+        mqtt_client.subscribe("test/device/price")  # subscribe topic2
+        # mqtt_client.subscribe("/pricetagProjectNPU/test/devices")  # subscribe topic2
+
+    else:
+        print('Bad connection. Code:', rc)
+
+mqtt_msg = ""
+
+@mqtt_client.on_message()
+def handle_mqtt_message(client, userdata, message):
+    with app.app_context():
+        
+        try:
+            mqtt_msg = message.payload.decode()
+            json_data = json.loads(mqtt_msg)  
+            mode = json_data['mode']
+            # timestamp = json_data['timestamp']
+            # msg = json_data['msg']
+            chipID = json_data['chip_id']
+            time2 = json_data['time2']
+            id = json_data['id']
+            print(json_data)
+            
+    
+            cur = db.connection.cursor()
+
+            if str(mode) == "ACT":
+                try:
+                    # update time2 to database
+                    sql = "UPDATE test SET time2 = %s WHERE id = %s"
+                    val = (time2, id)
+                    cur.execute(sql, val)
+                    db.connection.commit()
+                    print ("Updated test successfully")
+                except IntegrityError as e:
+                    raise e
+                except Exception as e:
+                    raise e
+        except Exception as e:
+            raise Exception(e)
+        
+i = 1
+topic = "/pricetagProjectNPU/test/devices"
+
+
+@app.route('/publish_mqtt')
+def publish_mqtt():
+    global i
+    print(i)
+    with app.app_context():
+        
+        
+        datetime_object = datetime.now()
+        time1 = datetime_object.strftime("%H:%M:%S") 
+        # mqtt_client.publish(topic, i)
+        json_data = {
+            "mode": "single",
+            "id":i,
+            "chip_id":123456789,
+            "msg":["name",8],
+            "timestamp":time1
+        }
+        mqtt_client.publish(topic, json.dumps(json_data))
+        
+        cur = db.connection.cursor()
+        
+        # commit to database
+        sql = "INSERT INTO test (id, name, time1) VALUES (%s, %s,%s)"
+        val = (i, "test", time1)
+        cur.execute(sql, val)
+        db.connection.commit()
+        
+        print(json.dumps(json_data))
+        
+        i = i + 1
+        
+        
+        
+        
+        return "SYN to esp32"
+        
+
+        
+
+if __name__ == '__main__':
+    
+    app.config.from_object(config['development'])
+    csrf.init_app(app)
+    app.run()

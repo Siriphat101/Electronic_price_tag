@@ -40,7 +40,7 @@
     {% if messages %}
     {% for message in messages %}
 
-    {% if message == "success add product" %}
+    {% if message == "successed add product" %}
     <div class="alert alert-success d-flex justify-content-between" role="alert">
       <div class="text-center">{{message}}</div>
       <button type="button" class="btn-close " data-bs-dismiss="alert" aria-label="Close">x<i class="fa-solid fa-xmark-large"></i></button>
@@ -177,6 +177,7 @@
                         <div class="form-group mt-3">
                           <label>ProductID</label>
                           <select class="form-select" name="product_id" id="product_id">
+                            <!-- <option value="None">None</option> -->
                             {% for id in product_id %}
                             <option value="{{id}}">{{id}}</option>
                     

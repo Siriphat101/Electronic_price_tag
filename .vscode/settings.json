@@ -1,6 +1,11 @@
 {
     "cSpell.words": [
+        "apscheduler",
+        "emqx",
+        "gmtime",
+        "KEEPALIVE",
         "paho",
+        "pricetag",
         "userdata"
     ]
 }

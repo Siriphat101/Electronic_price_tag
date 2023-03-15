@@ -12,7 +12,7 @@
 
     
 
-    <!-- Custom fonts for this template-->
+    <!-- Custom fonts and icon for this template-->
     <link
       href="{{url_for('static',filename='vendor/fontawesome-free/css/all.min.css')}}"
       rel="stylesheet"
@@ -47,10 +47,10 @@
           class="sidebar-brand d-flex align-items-center justify-content-center"
           href="{{url_for('dashboard')}}"
         >
-          <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fas fa-laugh-wink"></i>
+          <div class="sidebar-brand-icon ">
+            EPTC
           </div>
-          <div class="sidebar-brand-text mx-3">NPU <sup>2</sup></div>
+          <div class="sidebar-brand-text mx-3">IOT</div>
         </a>
 
         <!-- Divider -->
@@ -58,7 +58,7 @@
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item mt-5 ">
-          <a class="nav-link border-bottom-primary" href="{{url_for('dashboard')}}">
+          <a class="nav-link " href="{{url_for('dashboard')}}">
             <i class='bx bxs-dashboard bx-md' ></i>
             <span class="menu-text">Dashboard</span></a
           >
@@ -76,11 +76,13 @@
             >
         </li>
         <li class="nav-item ">
-          <a class="nav-link " href="{{url_for('dashboard')}}">
-            <i class='bx bxs-help-circle bx-md' ></i>
-            <span>Help</span></a
+          <a class="nav-link " href="{{url_for('logout')}}">
+            <i class='bx bx-log-out bx-md' ></i>
+            
+            <span>Logout</span></a
           >
-      </li>
+        </li>
+       
 
 
         <!-- Divider -->
@@ -135,7 +137,7 @@
             <!-- Topbar Navbar -->
             <ul class="navbar-nav ml-auto">
               <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-              <li class="nav-item dropdown no-arrow d-sm-none">
+              <!-- <li class="nav-item dropdown no-arrow d-sm-none">
                 <a
                   class="nav-link dropdown-toggle"
                   href="#"
@@ -147,7 +149,7 @@
                 >
                   <i class="fas fa-search fa-fw"></i>
                 </a>
-                
+                 -->
 
               
 
@@ -218,7 +220,7 @@
         <footer class="sticky-footer bg-white">
           <div class="container my-auto">
             <div class="copyright text-center my-auto">
-              <span>Copyright &copy; Your Website 2021</span>
+              <span>Electronic Price Tags Control via Internet of Things Technology</span>
             </div>
           </div>
         </footer>
@@ -282,13 +284,6 @@
     <!-- Custom scripts for all pages-->
     <script src="{{url_for('static',filename='js/sb-admin-2.min.js')}}"></script>
 
-    <!-- Chart -->
-    <!-- Page level plugins -->
-    <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
-
-    <!-- Page level custom scripts -->
-    <!-- <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script> -->
 
         {% block script%}
         {% endblock %}
