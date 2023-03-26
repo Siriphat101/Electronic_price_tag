@@ -90,11 +90,6 @@ def check_device_status():
 scheduler.add_job(check_device_status, 'interval', minutes=1)
 scheduler.start()
 
-
-
-
-
-
 @login_manager.user_loader
 def load_user(user_id):
     return ModelUser.get_by_id(db, user_id)
@@ -111,7 +106,6 @@ def handle_connect(client, userdata, flags, rc):
         print('Bad connection. Code:', rc)
 
 
-
 mqtt_msg = ""
 @mqtt_client.on_message()
 def handle_mqtt_message(client, userdata, message):
@@ -124,26 +118,15 @@ def handle_mqtt_message(client, userdata, message):
             chipID = json_data['chipID']
             status = json_data['status']
             
-            # last_seen = datetime.datetime.now()
-            # last_seen = last_seen.strftime("%H:%M:%S.%f")
-            # time2 = last_seen
-            # get milliseconds 
-            # print("time 2", time2)
-            
+            last_seen = datetime.datetime.now()
+            last_seen = last_seen.strftime("%Y-%m-%d %H:%M:%S.%f")
             
             msg_str = str(msg)
-            print(mqtt_msg)
             name = "node" + str(chipID)
             
-            # current_GMT = time.gmtime()
-            # ts = calendar.timegm(current_GMT)
+            current_GMT = time.gmtime()
+            ts = calendar.timegm(current_GMT)
             # StrTimeStamp = str(ts)
-            # print("ts",StrTimeStamp)
-            # time_millis()
-            last_seen = datetime.datetime.now()
-            last_seen = last_seen.strftime("%H:%M:%S.%f")
-            time1 =last_seen
-            time2 =last_seen
     
             cur = db.connection.cursor()
 
@@ -152,12 +135,12 @@ def handle_mqtt_message(client, userdata, message):
                     check = MD.getDeviceBychipID(db, chipID)
                     print(check)
                     if check is False:
-                        print("Device not found")
+                        # print("Device not found")
                         # add device
                         # print("last_seen: ", last_seen)
                         MD.addDevice(db, chipID, name, status, last_seen)
                     else:
-                        print("Device found")
+                        # print("Device found")
                         # update device
                         
                         if status == 1:
@@ -165,27 +148,20 @@ def handle_mqtt_message(client, userdata, message):
                             # print("last_seen: ", last_seen)
                             
                             MD.updateDevice(db, chipID, status, last_seen)
-                            
-                    
+         
                 except IntegrityError as e:
                     raise e
                 except Exception as e:
                     raise e
                 
-            if msg_str == "ACT":
-                print("ACT")
+            elif(msg_str=="ACT"):
                 try:
-                    data_json = {
-                    "mode": "ACT",
-                    "chip_id": chipID,
-                    "msg": [
-                        "row[0]", "row[1]"
-                    ],
-                    "timestamp": time2
-                }
-                    mqtt_client.publish(topic, json.dumps(data_json))
+                    print("act:",last_seen)
+                    mqtt_client.publish("turnarountime", json.dumps({"msg": "ACK", "chipID": chipID, "status": status, "last_seen": last_seen}), qos=1)
+                    
+                    
                 except Exception as e:
-                    raise e
+                    raise Exception(e)
                 
         except Exception as e:
             raise Exception(e)
@@ -405,8 +381,7 @@ def update_device(id):
             device_id = request.form['chipID']
             device_name = request.form['device_name']
             product_id = request.form['product_id']
-            last_seen = datetime.datetime.now()
-            last_seen = last_seen.strftime("%Y-%m-%d %H:%M:%S.%f")
+            
             
 
             cur = db.connection.cursor()
@@ -427,7 +402,7 @@ def update_device(id):
                 ts = calendar.timegm(current_GMT)
                 StrTimeStamp = str(ts)
                 last_seen = datetime.datetime.now()
-
+                last_seen = last_seen.strftime("%Y-%m-%d %H:%M:%S.%f")
                 sql = """SELECT  product_name, product_price FROM products WHERE product_id = '{}'""".format(
                     product_id)
                 cur.execute(sql)
@@ -439,12 +414,13 @@ def update_device(id):
                     "msg": [
                         row[0], row[1]
                     ],
-                    "timestamp": ts
+                    "timestamp": last_seen
                 }
 
                 # client.publish("price_tag1", payload= json.dumps(data_json), qos=1)
-                mqtt_client.publish("/pricetagProjectNPU",
-                                    json.dumps(data_json), qos=1)
+                mqtt_client.publish("/pricetagProjectNPU",json.dumps(data_json), qos=1)
+                mqtt_client.publish("turnarountime",json.dumps(data_json), qos=1)
+                
 
                 return redirect(url_for('devices'))
 
